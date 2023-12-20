@@ -1,0 +1,102 @@
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Plánování přípravy chleba</title>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+
+    #startDateTime {
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        margin-top: 10px;
+    }
+
+    button {
+        padding: 10px 15px;
+        background-color: #4285f4;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+    button:hover {
+        background-color: #3079ed;
+    }
+
+    h2 {
+        color: #333;
+    }
+
+    #schedule {
+        margin-top: 20px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #schedule p {
+        font-size: 16px;
+        color: #555;
+        line-height: 1.6;
+    }
+</style>
+</head>
+<body>
+<label for="startDateTime">Začátek přípravy:</label>
+<input type="datetime-local" id="startDateTime" name="startDateTime">
+<button onclick="calculateSchedule()">Vypočítat plán</button>
+
+<h2>Plán přípravy</h2>
+<div id="schedule"></div>
+<script>
+    const preparationSteps = [
+        { name: 'Začátek vedení kvásku', duration: 0 },
+        { name: 'První přidání mouky a vody do kvásku', duration: 270 }, // 4.5 hours
+        { name: 'Druhé přidání mouky a vody, když je kvásek hladový', duration: 360 }, // 6 hours
+        { name: 'Třetí přidání mouky a vody, když je kvásek opět hladový', duration: 210 }, // 3.5 hours
+        { name: 'Míchání těsta', duration: 15 }, // 15 minutes
+        { name: 'První odpočinek těsta', duration: 30 }, // 30 minutes
+        { name: 'Formování bochánku a odpočinek na pokojové teplotě', duration: 20 }, // 20 minutes
+        { name: 'Chlazení těsta v lednici', duration: 840 }, // 14 hours
+        { name: 'Temperovaní těsta před pečením', duration: 45 }, // Average of 30-60 minutes
+        { name: 'Pečení na 250 °C', duration: 10 }, // 10 minutes
+        { name: 'Pečení na 200 °C', duration: 30 }, // 30 minutes
+        { name: 'Hotovo', duration: 0}
+    ];
+
+    function calculateSchedule() {
+        const startDateTime = document.getElementById('startDateTime').value;
+        if (!startDateTime) {
+            alert('Prosím zadejte startovní datum a čas.');
+            return;
+        }
+        
+        let currentDateTime = new Date(startDateTime);
+        let lastDate = currentDateTime.toLocaleDateString();
+        let scheduleHTML = '<h3>Časy jednotlivých kroků:</h3>';
+
+        preparationSteps.forEach((step, index) => {
+            let currentDate = currentDateTime.toLocaleDateString();
+            if (lastDate !== currentDate) {
+                scheduleHTML += '<hr>';  // Horizontální čára jako oddělovač mezi dny
+                lastDate = currentDate;
+            }
+            scheduleHTML += `<p>Krok ${index + 1} - ${step.name}: ${currentDateTime.toLocaleString()}</p>`;
+            currentDateTime = new Date(currentDateTime.getTime() + step.duration * 60000); // Přidání minuty
+        });
+
+        document.getElementById('schedule').innerHTML = scheduleHTML;
+    }
+</script>
+</body>
+</html>
