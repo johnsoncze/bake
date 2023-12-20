@@ -11,6 +11,16 @@
         color: #333;
     }
 
+    .container {
+        width: 80%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
     #startDateTime {
         padding: 8px;
         border-radius: 4px;
@@ -36,28 +46,29 @@
         color: #333;
     }
 
-    #schedule {
-        margin-top: 20px;
-        background-color: white;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
     #schedule p {
         font-size: 16px;
         color: #555;
         line-height: 1.6;
     }
+
+    hr {
+        border: none;
+        height: 1px;
+        background-color: #ccc;
+        margin: 20px 0;
+    }
 </style>
 </head>
 <body>
-<label for="startDateTime">Začátek přípravy:</label>
-<input type="datetime-local" id="startDateTime" name="startDateTime">
-<button onclick="calculateSchedule()">Vypočítat plán</button>
+<div class="container">
+    <label for="startDateTime">Začátek přípravy:</label>
+    <input type="datetime-local" id="startDateTime" name="startDateTime">
+    <button onclick="calculateSchedule()">Vypočítat plán</button>
 
-<h2>Plán přípravy</h2>
-<div id="schedule"></div>
+    <h2>Plán přípravy</h2>
+    <div id="schedule"></div>
+</div>
 <script>
     const preparationSteps = [
         { name: 'Začátek vedení kvásku', duration: 0 },
