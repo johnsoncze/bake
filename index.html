@@ -120,7 +120,7 @@
                 scheduleHTML += '<hr>';  // Horizontální čára jako oddělovač mezi dny
                 lastDate = currentDate;
             }
-            scheduleHTML += `<p>Krok ${index + 1} - ${step.name}: ${currentDateTime.toLocaleString()}</p>`;
+            scheduleHTML += `<p>${currentDateTime.toLocaleString()}: Krok ${index + 1} - ${step.name}</p>`;
             currentDateTime = new Date(currentDateTime.getTime() + step.duration * 60000); // Přidání minuty
         });
 
