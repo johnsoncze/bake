@@ -367,6 +367,11 @@
                         content.style.maxHeight = content.scrollHeight + "px";
                     } 
                 });
+                // Otevře první sekci po načtení stránky
+                if (i === 0) {
+                    coll[i].classList.add("active");
+                    coll[i].nextElementSibling.style.maxHeight = coll[i].nextElementSibling.scrollHeight + "px";
+                }
             }
 
             // Načtení a vypočet plánu při načtení stránky
