@@ -364,13 +364,13 @@
                     if (content.style.maxHeight){
                         content.style.maxHeight = null;
                     } else {
-                        content.style.maxHeight = content.scrollHeight + "px";
+                        content.style.maxHeight = "none";
                     } 
                 });
                 // Otevře první sekci po načtení stránky
                 if (i === 0) {
                     coll[i].classList.add("active");
-                    coll[i].nextElementSibling.style.maxHeight = coll[i].nextElementSibling.scrollHeight + "px";
+                    coll[i].nextElementSibling.style.maxHeight = "none";
                 }
             }
 
