@@ -151,6 +151,17 @@
 
 <body>
     <div class="container">
+
+        <div class="section">
+            <h1>Plánování přípravy chleba</h1>
+            <div class="form-row">
+                <label for="startDateTime">Začátek přípravy:</label>
+                <input type="datetime-local" id="startDateTime" name="startDateTime">
+                <button onclick="calculateSchedule()">Vypočítat plán</button>
+            </div>
+            <div id="schedule" class="hidden"></div>
+        </div>
+        <hr />
         <!-- Sekce pro vedení kvásku -->
         <div class="section">
             <h1>Vedení kvásku</h1>
@@ -217,16 +228,6 @@
                 Sázíme do předehřáté trouby na 250 °C, rozprašovačem do ní stříkneme vodu a pečeme cca 10 minut. Pak
                 teplotu snížíme na 200 °C a dopečeme cca 30 minut. Čas se může lišit podle výkonu trouby nebo pece.
             </p>
-        </div>
-        <hr />
-        <div class="section">
-            <h1>Plánování přípravy chleba</h1>
-            <div class="form-row">
-                <label for="startDateTime">Začátek přípravy:</label>
-                <input type="datetime-local" id="startDateTime" name="startDateTime">
-                <button onclick="calculateSchedule()">Vypočítat plán</button>
-            </div>
-            <div id="schedule" class="hidden"></div>
         </div>
     </div>
     <style>
