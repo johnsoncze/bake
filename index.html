@@ -119,6 +119,36 @@
             /* Zpoždění startu animace */
         }
 
+        .collapsible {
+            cursor: pointer;
+            padding: 10px;
+            width: 100%;
+            text-align: left;
+            border: none;
+            outline: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .collapsible:after {
+            content: '\002B';
+            color: #777;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+        }
+
+        .collapsible.active:after {
+            content: "\2212";
+        }
+
+        .content {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            background-color: #f1f1f1;
+        }
+
         /* Responzivní styly pro mobilní zařízení */
         @media screen and (max-width: 600px) {
             .container {
@@ -153,81 +183,87 @@
     <div class="container">
 
         <div class="section">
-            <h1>Plánování přípravy chleba</h1>
-            <div class="form-row">
-                <label for="startDateTime">Začátek přípravy:</label>
-                <input type="datetime-local" id="startDateTime" name="startDateTime">
-                <button>Vypočítat plán</button>
+            <h1 class="collapsible">Plánování přípravy chleba</h1>
+            <div class="content">
+                <div class="form-row">
+                    <label for="startDateTime">Začátek přípravy:</label>
+                    <input type="datetime-local" id="startDateTime" name="startDateTime">
+                    <button>Vypočítat plán</button>
+                </div>
+                <div id="schedule" class="hidden"></div>
             </div>
-            <div id="schedule" class="hidden"></div>
         </div>
         <hr />
         <!-- Sekce pro vedení kvásku -->
         <div class="section">
-            <h1>Vedení kvásku</h1>
-            <p>Poté, co jsme kvásek založili, bude veškerá další péče spočívat v jeho krmění – tomu se mezi pekaři říká
-                vedení kvásku.</p>
-
-            <h2>3-stupňové vedení:</h2>
-            <p>Jedná se o 3-stupňové vedení kvásku, které je sice náročnější na vedení, ale zajišťuje zvláště výrazlou
-                chuť a stabilitu. V prvním stupni se množí především kvasinky, v druhém stupni pak bakterie produkující
-                kyseliny. Třetí stupeň slouží k vyrovnání poměru bakterií homo- a heterofermentativního kvašení.</p>
-
-            <h2>Návod pro výrobu 0,39 kg kvásku / 1 ks chleba</h2>
-            <ul>
-                <li>1:00 - Vynášeme kvásek z boxu o objemu 0,13 kg. Do 0,13 kg zbylého zrna kvásku přimícháme 0,043 kg
-                    žitné mouky a 0,043 l vlažné vody 32°C, přikryjeme a necháme stát 4-6 hodin při 22-26°C. Kvásek by
-                    měl zvětšit objem a po nějaké době začít klesat.</li>
-                <li>5:00 - Když je kvásek hladový (jeho objem se zmenšil a už dále neklesá), přimícháme dalších 0,043 kg
-                    žitné mouky a 0,021 l vlažné vody 32°C. Necháme stát asi 6 hodin při cca 30°C.</li>
-                <li>11:00 - Když je kvásek opět hladový (jeho objem se zmenšil a už dále neklesá), přimícháme dalších
-                    0,043 kg žitné mouky a 0,069 l vlažné vody 32°C. Necháme stát 3-4 hodiny při 28-30°C.</li>
-                <li>15:00 - Když je kvásek ve fázi klesání nebo už je „spadlý“ úplně (cca po 4 hodinách), můžeme zadělat
-                    těsto na chleba. Z kvásku odebereme 0,13 kg, které dáme do chladu v uzavřené nádobě (ne pevně
-                    uzavřené!) a zbytek kvásku použijeme do chleba.</li>
-            </ul>
-
-            <h1>Poznámky:</h1>
-            <ul>
-                <li>Teploty není třeba úzkostlivě dodržovat. Důležité je aby kvásek vždy vyběhl nahoru a pak začal
-                    klesat a byl hodně kyselý (dochutnat).</li>
-                <li>Časy mezi jednotlivými krměními velmi záleží na teplotě, takže je berte jako orientační.</li>
-                <li>Kvásku nevadí, když zůstane nějakou dobu hladový.</li>
-                <li>Pokud to vypadá, že kvásek utíká z nádoby, tak je možno ho důkladně zamíchat aby spadnul dolů –
-                    vůbec mu to nevadí a navíc dostane více kyslíku.</li>
-            </ul>
+            <h1 class="collapsible">Vedení kvásku</h1>
+            <div class="content">
+                <p>Poté, co jsme kvásek založili, bude veškerá další péče spočívat v jeho krmění – tomu se mezi pekaři říká
+                    vedení kvásku.</p>
+    
+                <h2>3-stupňové vedení:</h2>
+                <p>Jedná se o 3-stupňové vedení kvásku, které je sice náročnější na vedení, ale zajišťuje zvláště výrazlou
+                    chuť a stabilitu. V prvním stupni se množí především kvasinky, v druhém stupni pak bakterie produkující
+                    kyseliny. Třetí stupeň slouží k vyrovnání poměru bakterií homo- a heterofermentativního kvašení.</p>
+    
+                <h2>Návod pro výrobu 0,39 kg kvásku / 1 ks chleba</h2>
+                <ul>
+                    <li>1:00 - Vynášeme kvásek z boxu o objemu 0,13 kg. Do 0,13 kg zbylého zrna kvásku přimícháme 0,043 kg
+                        žitné mouky a 0,043 l vlažné vody 32°C, přikryjeme a necháme stát 4-6 hodin při 22-26°C. Kvásek by
+                        měl zvětšit objem a po nějaké době začít klesat.</li>
+                    <li>5:00 - Když je kvásek hladový (jeho objem se zmenšil a už dále neklesá), přimícháme dalších 0,043 kg
+                        žitné mouky a 0,021 l vlažné vody 32°C. Necháme stát asi 6 hodin při cca 30°C.</li>
+                    <li>11:00 - Když je kvásek opět hladový (jeho objem se zmenšil a už dále neklesá), přimícháme dalších
+                        0,043 kg žitné mouky a 0,069 l vlažné vody 32°C. Necháme stát 3-4 hodiny při 28-30°C.</li>
+                    <li>15:00 - Když je kvásek ve fázi klesání nebo už je „spadlý“ úplně (cca po 4 hodinách), můžeme zadělat
+                        těsto na chleba. Z kvásku odebereme 0,13 kg, které dáme do chladu v uzavřené nádobě (ne pevně
+                        uzavřené!) a zbytek kvásku použijeme do chleba.</li>
+                </ul>
+    
+                <h1>Poznámky:</h1>
+                <ul>
+                    <li>Teploty není třeba úzkostlivě dodržovat. Důležité je aby kvásek vždy vyběhl nahoru a pak začal
+                        klesat a byl hodně kyselý (dochutnat).</li>
+                    <li>Časy mezi jednotlivými krměními velmi záleží na teplotě, takže je berte jako orientační.</li>
+                    <li>Kvásku nevadí, když zůstane nějakou dobu hladový.</li>
+                    <li>Pokud to vypadá, že kvásek utíká z nádoby, tak je možno ho důkladně zamíchat aby spadnul dolů –
+                        vůbec mu to nevadí a navíc dostane více kyslíku.</li>
+                </ul>
+            </div>
         </div>
         <hr />
         <!-- Sekce pro pečení chleba -->
         <div class="section">
-            <h1>Chleba 33</h1>
-            <h2>Suroviny na jeden bochník</h2>
-            <ul>
-                <li>kvas 220 g</li>
-                <li>mouka pšeničná chlebová PROBIO 330 g</li>
-                <li>voda 200 ml</li>
-                <li>sůl 20 g</li>
-                <li>drcený kmín 10 g</li>
-                <li>brambory (vařené ve slupce a nastrouhané) 140 g</li>
-            </ul>
-            <p>Základ dobrého chleba. Ten náš je třístupňově vedený, který je trochu náročnější na založení, ale odměnou
-                vám bude vyzrálá chuť a stabilita. Pokud vám kvásek doma umře, stavte se pro nový. Rádi vám ho dáme.</p>
-            <h2>Postup</h2>
-            <p>
-                Do díže dáme vodu (22 °C), kvas a mouku. Pomalu mícháme 5 minut. V průběhu přidáme sůl a kmín. Pak
-                přidáme uvařené brambory a rychle mícháme ještě 10 minut. Těsto zapaříme moukou a necháme 30 minut stát
-                v díži.
-            </p>
-            <p>
-                Poté skoulíme a uděláme bochánek do ošatky s vysypaným plátnem. Necháme 20 minut venku, pak uložíme do
-                lednice na 14 hodin. Před pečením necháme natemperovat cca 30-60 minut tak, aby byl nakynutý. Chleba z
-                ošatky překlopíme přes ruce na pečicí papír, ometeme přebytečnou mouku, propíchneme špejlí a postříkáme
-                vodou.
-            </p>
-            <p>
-                Sázíme do předehřáté trouby na 250 °C, rozprašovačem do ní stříkneme vodu a pečeme cca 10 minut. Pak
-                teplotu snížíme na 200 °C a dopečeme cca 30 minut. Čas se může lišit podle výkonu trouby nebo pece.
-            </p>
+            <h1 class="collapsible">Chleba 33</h1>
+            <div class="content">
+                <h2>Suroviny na jeden bochník</h2>
+                <ul>
+                    <li>kvas 220 g</li>
+                    <li>mouka pšeničná chlebová PROBIO 330 g</li>
+                    <li>voda 200 ml</li>
+                    <li>sůl 20 g</li>
+                    <li>drcený kmín 10 g</li>
+                    <li>brambory (vařené ve slupce a nastrouhané) 140 g</li>
+                </ul>
+                <p>Základ dobrého chleba. Ten náš je třístupňově vedený, který je trochu náročnější na založení, ale odměnou
+                    vám bude vyzrálá chuť a stabilita. Pokud vám kvásek doma umře, stavte se pro nový. Rádi vám ho dáme.</p>
+                <h2>Postup</h2>
+                <p>
+                    Do díže dáme vodu (22 °C), kvas a mouku. Pomalu mícháme 5 minut. V průběhu přidáme sůl a kmín. Pak
+                    přidáme uvařené brambory a rychle mícháme ještě 10 minut. Těsto zapaříme moukou a necháme 30 minut stát
+                    v díži.
+                </p>
+                <p>
+                    Poté skoulíme a uděláme bochánek do ošatky s vysypaným plátnem. Necháme 20 minut venku, pak uložíme do
+                    lednice na 14 hodin. Před pečením necháme natemperovat cca 30-60 minut tak, aby byl nakynutý. Chleba z
+                    ošatky překlopíme přes ruce na pečicí papír, ometeme přebytečnou mouku, propíchneme špejlí a postříkáme
+                    vodou.
+                </p>
+                <p>
+                    Sázíme do předehřáté trouby na 250 °C, rozprašovačem do ní stříkneme vodu a pečeme cca 10 minut. Pak
+                    teplotu snížíme na 200 °C a dopečeme cca 30 minut. Čas se může lišit podle výkonu trouby nebo pece.
+                </p>
+            </div>
         </div>
     </div>
     <style>
@@ -306,6 +342,7 @@
             const savedDateTime = localStorage.getItem('selectedDateTime');
             if (savedDateTime) {
                 document.getElementById('startDateTime').value = savedDateTime;
+                calculateSchedule();
             }
         }
 
@@ -317,7 +354,24 @@
         });
 
         // Načteme uložené datum a čas při načtení stránky
-        document.addEventListener('DOMContentLoaded', loadDateTime);
+        document.addEventListener('DOMContentLoaded', function() {
+            const coll = document.getElementsByClassName("collapsible");
+
+            for (let i = 0; i < coll.length; i++) {
+                coll[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    const content = this.nextElementSibling;
+                    if (content.style.maxHeight){
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    } 
+                });
+            }
+
+            // Načtení a vypočet plánu při načtení stránky
+            loadDateTime();
+        });
     </script>
 </body>
 
