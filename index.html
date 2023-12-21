@@ -157,7 +157,7 @@
             <div class="form-row">
                 <label for="startDateTime">Začátek přípravy:</label>
                 <input type="datetime-local" id="startDateTime" name="startDateTime">
-                <button onclick="calculateSchedule()">Vypočítat plán</button>
+                <button>Vypočítat plán</button>
             </div>
             <div id="schedule" class="hidden"></div>
         </div>
@@ -294,6 +294,30 @@
             document.getElementById('schedule').classList.remove('hidden');
             document.getElementById('schedule').classList.add('visible');
         }
+
+        function saveDateTime() {
+            const selectedDateTime = document.getElementById('startDateTime').value;
+            if (selectedDateTime) {
+                localStorage.setItem('selectedDateTime', selectedDateTime);
+            }
+        }
+
+        function loadDateTime() {
+            const savedDateTime = localStorage.getItem('selectedDateTime');
+            if (savedDateTime) {
+                document.getElementById('startDateTime').value = savedDateTime;
+            }
+        }
+
+        // Přidáme posluchač události na tlačítko, aby se uložil čas při jeho kliknutí
+        const calcButton = document.querySelector('button');
+        calcButton.addEventListener('click', () => {
+            saveDateTime(); // Uloží vybrané datum a čas
+            calculateSchedule(); // Spustí výpočet plánu
+        });
+
+        // Načteme uložené datum a čas při načtení stránky
+        document.addEventListener('DOMContentLoaded', loadDateTime);
     </script>
 </body>
 
