@@ -35,19 +35,30 @@ function groupStepsByDay(steps) {
   return groupedSteps;
 }
 
-function calculateSchedule(startDateTime) {
-  let currentDateTime = new Date(startDateTime);
-  let steps = preparationSteps.map((step) => {
+function calculateSchedule(dateTime, isStart) {
+  let currentDateTime = new Date(dateTime);
+  let steps = preparationSteps.slice(); // Kopie pole, abychom mohli reverzovat bez mutace původního
+
+  if (!isStart) {
+    // Pokud je to konec, reverzujeme kroky pro zpětný výpočet
+    steps = steps.reverse();
+  }
+
+  let resultSteps = steps.map((step) => {
     let stepDateTime = new Date(
-      currentDateTime.getTime()
+      currentDateTime.getTime() + (isStart ? 1 : -1) * step.duration * 60000
     );
-    currentDateTime = new Date(
-      currentDateTime.getTime() + step.duration * 60000
-    );
+    // Pro start přidáváme čas, pro konec odečítáme
+    currentDateTime = stepDateTime;
     return { date: stepDateTime.toISOString(), name: step.name };
   });
 
-  return groupStepsByDay(steps);
+  // Pokud počítáme od konce, potřebujeme výsledek opět obrátit
+  if (!isStart) {
+    resultSteps = resultSteps.reverse();
+  }
+
+  return groupStepsByDay(resultSteps);
 }
 
 function CollapsibleSection({ title, children, defaultOpen = true }) {
@@ -70,13 +81,20 @@ function CollapsibleSection({ title, children, defaultOpen = true }) {
 
 function App() {
   const [dateTime, setDateTime] = useState("");
+  const [isStart, setIsStart] = useState(true); // Initialize isStart state
   const [schedule, setSchedule] = useState([]);
 
   useEffect(() => {
     const savedDateTime = localStorage.getItem("selectedDateTime");
+    const savedIsStart = localStorage.getItem("isStartProcess"); // Retrieve the isStart value from localStorage
+
     if (savedDateTime) {
       setDateTime(savedDateTime);
-      setSchedule(calculateSchedule(savedDateTime));
+      setSchedule(calculateSchedule(savedDateTime, savedIsStart === "true"));
+    }
+
+    if (savedIsStart !== null) {
+      setIsStart(savedIsStart === "true"); // Set isStart based on the retrieved value
     }
   }, []);
 
@@ -84,7 +102,14 @@ function App() {
     const newDateTime = event.target.value;
     setDateTime(newDateTime);
     localStorage.setItem("selectedDateTime", newDateTime);
-    setSchedule(calculateSchedule(newDateTime));
+    setSchedule(calculateSchedule(newDateTime, isStart));
+  };
+
+  const handleProcessChange = (event) => {
+    const newIsStart = event.target.value === "start";
+    setIsStart(newIsStart);
+    localStorage.setItem("isStartProcess", newIsStart); // Save the isStart state to localStorage
+    setSchedule(calculateSchedule(dateTime, newIsStart));
   };
 
   return (
@@ -92,7 +117,7 @@ function App() {
       <CollapsibleSection title="Plánování přípravy chleba">
         <div className="form-row flex items-center mb-4">
           <label htmlFor="startDateTime" className="mr-2">
-            Začátek přípravy:
+            Datum a čas:
           </label>
           <input
             type="datetime-local"
@@ -102,6 +127,28 @@ function App() {
             onChange={handleDateTimeChange}
             className="mr-2 p-2 border rounded"
           />
+          <div>
+            <input
+              type="radio"
+              id="startProcess"
+              name="processTime"
+              value="start"
+              checked={isStart}
+              onChange={handleProcessChange}
+            />
+            <label htmlFor="startProcess" className="mr-2">
+              Začátek
+            </label>
+            <input
+              type="radio"
+              id="endProcess"
+              name="processTime"
+              value="end"
+              checked={!isStart}
+              onChange={handleProcessChange}
+            />
+            <label htmlFor="endProcess">Konec</label>
+          </div>
         </div>
         <div className="mt-4">
           {Object.entries(schedule).map(([date, steps], index) => (
@@ -148,8 +195,8 @@ function App() {
         <ul class="list-disc pl-5 space-y-1">
           <li>
             1:00 - Vyndáme kvásek z boxu o objemu 0,13 kg. Do 0,13 kg zbylého
-            kvásku přimícháme 0,043 kg žitné mouky a 0,043 l vlažné vody
-            32°C, přikryjeme a necháme stát 4-6 hodin při 22-26°C. Kvásek by měl
+            kvásku přimícháme 0,043 kg žitné mouky a 0,043 l vlažné vody 32°C,
+            přikryjeme a necháme stát 4-6 hodin při 22-26°C. Kvásek by měl
             zvětšit objem a po nějaké době začít klesat.
           </li>
           <li>
