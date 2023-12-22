@@ -40,23 +40,18 @@ function calculateSchedule(dateTime, isStart) {
   let steps = preparationSteps.slice(); // Kopie pole, abychom mohli reverzovat bez mutace původního
 
   if (!isStart) {
-    // Pokud je to konec, reverzujeme kroky pro zpětný výpočet
-    steps = steps.reverse();
+    const length = steps.reduce((acc, step) => acc + step.duration, 0);
+    currentDateTime = new Date(currentDateTime.getTime() + length * -60000);
   }
 
   let resultSteps = steps.map((step) => {
-    let stepDateTime = new Date(
-      currentDateTime.getTime() + (isStart ? 1 : -1) * step.duration * 60000
-    );
+    let stepDateTime = new Date(currentDateTime.getTime());
     // Pro start přidáváme čas, pro konec odečítáme
-    currentDateTime = stepDateTime;
+    currentDateTime = new Date(
+      currentDateTime.getTime() + step.duration * 60000
+    );
     return { date: stepDateTime.toISOString(), name: step.name };
   });
-
-  // Pokud počítáme od konce, potřebujeme výsledek opět obrátit
-  if (!isStart) {
-    resultSteps = resultSteps.reverse();
-  }
 
   return groupStepsByDay(resultSteps);
 }
@@ -175,13 +170,13 @@ function App() {
       </CollapsibleSection>
 
       <CollapsibleSection title="Vedení kvásku">
-        <p class="my-4">
+        <p className="my-4">
           Poté, co jsme kvásek založili, bude veškerá další péče spočívat v jeho
           krmění – tomu se mezi pekaři říká vedení kvásku.
         </p>
 
-        <h2 class="text-lg font-bold mb-2">3-stupňové vedení:</h2>
-        <p class="my-4">
+        <h2 className="text-lg font-bold mb-2">3-stupňové vedení:</h2>
+        <p className="my-4">
           Jedná se o 3-stupňové vedení kvásku, které je sice náročnější na
           vedení, ale zajišťuje zvláště výrazlou chuť a stabilitu. V prvním
           stupni se množí především kvasinky, v druhém stupni pak bakterie
@@ -189,10 +184,10 @@ function App() {
           homo- a heterofermentativního kvašení.
         </p>
 
-        <h2 class="text-lg font-bold mb-2">
+        <h2 className="text-lg font-bold mb-2">
           Návod pro výrobu 0,39 kg kvásku / 1 ks chleba
         </h2>
-        <ul class="list-disc pl-5 space-y-1">
+        <ul className="list-disc pl-5 space-y-1">
           <li>
             1:00 - Vyndáme kvásek z boxu o objemu 0,13 kg. Do 0,13 kg zbylého
             kvásku přimícháme 0,043 kg žitné mouky a 0,043 l vlažné vody 32°C,
@@ -217,7 +212,7 @@ function App() {
           </li>
         </ul>
 
-        <h2 class="text-lg font-bold mb-2">Poznámky:</h2>
+        <h2 className="text-lg font-bold mb-2">Poznámky:</h2>
         <ul>
           <li>
             Teploty není třeba úzkostlivě dodržovat. Důležité je aby kvásek vždy
@@ -237,8 +232,8 @@ function App() {
       </CollapsibleSection>
 
       <CollapsibleSection title="Chleba 33">
-        <h2 class="text-lg font-bold mb-2">Suroviny na jeden bochník</h2>
-        <ul class="list-disc pl-5 space-y-1">
+        <h2 className="text-lg font-bold mb-2">Suroviny na jeden bochník</h2>
+        <ul className="list-disc pl-5 space-y-1">
           <li>kvas 220 g</li>
           <li>mouka pšeničná chlebová PROBIO 330 g</li>
           <li>voda 200 ml</li>
@@ -246,26 +241,26 @@ function App() {
           <li>drcený kmín 10 g</li>
           <li>brambory (vařené ve slupce a nastrouhané) 140 g</li>
         </ul>
-        <p class="my-4">
+        <p className="my-4">
           Základ dobrého chleba. Ten náš je třístupňově vedený, který je trochu
           náročnější na založení, ale odměnou vám bude vyzrálá chuť a stabilita.
           Pokud vám kvásek doma umře, stavte se pro nový. Rádi vám ho dáme.
         </p>
-        <h2 class="text-xl font-semibold my-4">Postup</h2>
-        <p class="mb-4">
+        <h2 className="text-xl font-semibold my-4">Postup</h2>
+        <p className="mb-4">
           Do díže dáme vodu (22 °C), kvas a mouku. Pomalu mícháme 5 minut. V
           průběhu přidáme sůl a kmín. Pak přidáme uvařené brambory a rychle
           mícháme ještě 10 minut. Těsto zaprášíme moukou a necháme 30 minut stát
           v díži.
         </p>
-        <p class="mb-4">
+        <p className="mb-4">
           Poté skoulíme a uděláme bochánek do ošatky s vysypaným plátnem.
           Necháme 20 minut venku, pak uložíme do lednice na 14 hodin. Před
           pečením necháme natemperovat cca 30-60 minut tak, aby byl nakynutý.
           Chleba z ošatky překlopíme přes ruce na pečicí papír, ometeme
           přebytečnou mouku, propíchneme špejlí a postříkáme vodou.
         </p>
-        <p class="mb-4">
+        <p className="mb-4">
           Sázíme do předehřáté trouby na 250 °C, rozprašovačem do ní stříkneme
           vodu a pečeme cca 10 minut. Pak teplotu snížíme na 200 °C a dopečeme
           cca 30 minut. Čas se může lišit podle výkonu trouby nebo pece.
