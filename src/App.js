@@ -172,13 +172,13 @@ function App() {
       <CollapsibleSection title="Vedení kvásku">
         <p className="my-4">
           Poté, co jsme kvásek založili, bude veškerá další péče spočívat v jeho
-          krmění – tomu se mezi pekaři říká vedení kvásku.
+          krmení - tomu se mezi pekaři říká vedení kvásku.
         </p>
 
         <h2 className="text-lg font-bold mb-2">3-stupňové vedení:</h2>
         <p className="my-4">
           Jedná se o 3-stupňové vedení kvásku, které je sice náročnější na
-          vedení, ale zajišťuje zvláště výrazlou chuť a stabilitu. V prvním
+          vedení, ale zajišťuje zvláště vyzrálou chuť a stabilitu. V prvním
           stupni se množí především kvasinky, v druhém stupni pak bakterie
           produkující kyseliny. Třetí stupeň slouží k vyrovnání poměru bakterií
           homo- a heterofermentativního kvašení.
@@ -216,16 +216,15 @@ function App() {
         <ul>
           <li>
             Teploty není třeba úzkostlivě dodržovat. Důležité je aby kvásek vždy
-            vyběhl nahoru a pak začal klesat a byl hodně kyselý (dochutnat).
+            vyběhl nahoru a pak začal klesat a byl hodně kyselý (ochutnat).
           </li>
           <li>
-            Časy mezi jednotlivými krměními velmi záleží na teplotě, takže je
-            berte jako orientační.
+            Časy mezi jednotlivým nakrmením velmi záleží na teplotě, takže je
+            berte jako orientační. Kvásku nevadí, když zůstane nějakou dobu hladový.
           </li>
-          <li>Kvásku nevadí, když zůstane nějakou dobu hladový.</li>
           <li>
-            Pokud to vypadá, že kvásek utíká z nádoby, tak je možno ho důkladně
-            zamíchat aby spadnul dolů – vůbec mu to nevadí a navíc dostane více
+            Pokud to vypadá, že kvásek uteče z nádoby, tak je možno ho důkladně
+            zamíchat aby spadnul dolů - vůbec mu to nevadí a navíc dostane více
             kyslíku.
           </li>
         </ul>
@@ -244,7 +243,6 @@ function App() {
         <p className="my-4">
           Základ dobrého chleba. Ten náš je třístupňově vedený, který je trochu
           náročnější na založení, ale odměnou vám bude vyzrálá chuť a stabilita.
-          Pokud vám kvásek doma umře, stavte se pro nový. Rádi vám ho dáme.
         </p>
         <h2 className="text-xl font-semibold my-4">Postup</h2>
         <p className="mb-4">
