@@ -91,6 +91,41 @@ function App() {
     setSchedule(calculateSchedule(dateTime, isStart, newReceipt));
   };
 
+  const downloadIcsFile = (step) => {
+    // You need to convert step's date and other details into the .ics format
+    const { date, name } = step;
+    console.log(typeof date);
+
+    // Convert dates to an appropriate format, add more details as needed
+    const start = new Date(date); // Convert or format this date as needed
+    const end = new Date(start.getTime() + 60 * 60 * 1000); // example end time, 1 hour after start
+
+    const icsFileContent = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//Your Company//Your Product//EN",
+      "BEGIN:VEVENT",
+      `UID:${date}@example.com`,
+      `DTSTAMP:${new Date().toISOString()}`,
+      `DTSTART:${start.toISOString()}`,
+      `DTEND:${end.toISOString()}`,
+      `SUMMARY:${name}`,
+      `DESCRIPTION:Step for ${name}`,
+      "END:VEVENT",
+      "END:VCALENDAR"
+    ].join("\n");
+
+    const blob = new Blob([icsFileContent], { type: 'text/calendar' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${name}.ics`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="container mx-auto p-4">
       <CollapsibleSection title="Plánování přípravy chleba">
@@ -144,12 +179,24 @@ function App() {
                 {steps.map((step, stepIndex) => (
                   <div
                     key={stepIndex}
-                    className="p-3 bg-white shadow rounded-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
+                    className="flex items-center justify-between p-3 bg-white shadow rounded-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300"
                   >
-                    <span className="font-semibold text-blue-600">
-                      {formatTime(step.date)}:
-                    </span>
-                    <span className="text-gray-600"> {step.name}</span>
+                    <div>
+                      <span className="font-semibold text-blue-600">
+                        {formatTime(step.date)}:
+                      </span>
+                      <span className="text-gray-600"> {step.name}</span>
+                    </div>
+                    <button
+                      onClick={() => downloadIcsFile(step)}
+                      className="text-blue-500 hover:text-blue-700"
+                      title="Add to calendar"
+                    >
+                      {/* Inline SVG for calendar icon */}
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 4h10a2 2 0 011.987 1.779L22 20a2 2 0 01-2 2H4a2 2 0 01-2-2V10a2 2 0 012-2h.013C4.098 7.646 8 7 8 7z" />
+                      </svg>
+                    </button>
                   </div>
                 ))}
               </div>
