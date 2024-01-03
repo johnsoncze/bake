@@ -23,7 +23,9 @@ function groupStepsByDay(steps) {
 
 function calculateSchedule(dateTime, isStart, receiptId) {
   let currentDateTime = new Date(dateTime);
-  let steps = receipts.find((receipt) => receipt.id === receiptId).steps.slice();
+  let steps = receipts
+    .find((receipt) => receipt.id === receiptId)
+    .steps.slice();
 
   if (!isStart) {
     const length = steps.reduce((acc, step) => acc + step.duration, 0);
@@ -62,7 +64,9 @@ function App() {
 
     if (savedDateTime) {
       setDateTime(savedDateTime);
-      setSchedule(calculateSchedule(savedDateTime, savedIsStart === "true", receipt));
+      setSchedule(
+        calculateSchedule(savedDateTime, savedIsStart === "true", receipt)
+      );
     }
   }, []);
 
@@ -85,46 +89,50 @@ function App() {
     setSelectedReceipt(newReceipt);
     localStorage.setItem("selectedReceipt", newReceipt);
     setSchedule(calculateSchedule(dateTime, isStart, newReceipt));
-  }
+  };
 
   return (
     <div className="container mx-auto p-4">
       <CollapsibleSection title="Plánování přípravy chleba">
-        <div className="form-row flex items-center mb-4">
-          <label htmlFor="startDateTime" className="mr-2">
+        <div className="form-row flex flex-col md:flex-row md:items-center mb-4">
+          <label htmlFor="startDateTime" className="md:mb-0 md:mr-2">
             Datum a čas:
           </label>
-          <input
-            type="datetime-local"
-            id="startDateTime"
-            name="startDateTime"
-            value={dateTime}
-            onChange={handleDateTimeChange}
-            className="mr-2 p-2 border rounded"
-          />
-          <div className="mr-2 p-2 rounded">
+          <div className="flex items-center mb-2 md:mb-0">
+            <input
+              type="datetime-local"
+              id="startDateTime"
+              name="startDateTime"
+              value={dateTime}
+              onChange={handleDateTimeChange}
+              className="mr-2 p-2 border rounded"
+            />
+            <div className="mr-2 p-2 rounded">
+              <SelectInput
+                options={[
+                  { value: "start", label: "Start" },
+                  { value: "end", label: "Konec" },
+                ]}
+                value={isStart ? "start" : "end"}
+                onChange={handleProcessChange}
+                id="process"
+              />
+            </div>
+          </div>
+          <div className="flex items-center mb-2 md:mb-0">
+            <label htmlFor="receipt" className="mr-2 md:mb-0 md:mr-2">
+              Recept:
+            </label>
             <SelectInput
-              options={[
-                {value: "start", label: "Start"},
-                {value: "end", label: "Konec"},
-              ]}
-              value={isStart ? "start" : "end"}
-              onChange={handleProcessChange}
-              id="process"
+              options={receipts.map((receipt) => ({
+                value: receipt.id,
+                label: receipt.name,
+              }))}
+              value={selectedReceipt}
+              onChange={handleReceiptChange}
+              id="receipt"
             />
           </div>
-          <label htmlFor="receipt" className="mr-2">
-            Recept:
-          </label>
-          <SelectInput
-            options={receipts.map((receipt) => ({
-              value: receipt.id,
-              label: receipt.name,
-            }))}
-            value={selectedReceipt}
-            onChange={handleReceiptChange}
-            id="receipt"
-          />
         </div>
         <div className="mt-4">
           {Object.entries(schedule).map(([date, steps], index) => (
