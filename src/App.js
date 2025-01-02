@@ -100,26 +100,44 @@ function App() {
     const start = new Date(date); // Convert or format this date as needed
     const end = new Date(start.getTime() + 60 * 60 * 1000); // example end time, 1 hour after start
 
-    const icsFileContent = [
-      "BEGIN:VCALENDAR",
-      "VERSION:2.0",
-      "PRODID:-//Your Company//Your Product//EN",
-      "BEGIN:VEVENT",
-      `UID:${date}@example.com`,
-      `DTSTAMP:${new Date().toISOString()}`,
-      `DTSTART:${start.toISOString()}`,
-      `DTEND:${end.toISOString()}`,
-      `SUMMARY:${name}`,
-      `DESCRIPTION:Step for ${name}`,
-      "END:VEVENT",
-      "END:VCALENDAR"
-    ].join("\n");
+    // const createICSFile = () => {
+    //   const event = `
+    // BEGIN:VCALENDAR
+    // VERSION:2.0
+    // BEGIN:VEVENT
+    // SUMMARY:Můj event
+    // DESCRIPTION:Podrobnosti o události.
+    // LOCATION:Praha, Česká republika
+    // DTSTART:20250102T120000Z
+    // DTEND:20250102T130000Z
+    // END:VEVENT
+    // END:VCALENDAR
+    //   `.trim();
+    
+    //   const blob = new Blob([event], { type: 'text/calendar' });
+    //   const url = URL.createObjectURL(blob);
+    //   return url;
+    // };
 
-    const blob = new Blob([icsFileContent], { type: 'text/calendar' });
-    const url = URL.createObjectURL(blob);
+    const createICSFile = () => {
+      const event = `
+        BEGIN:VCALENDAR
+        VERSION:2.0
+        BEGIN:VEVENT
+        SUMMARY:${name}
+        DTSTART:${start.toISOString().replace(/[-:]/g, "").split(".")[0]}Z
+        DTEND:${end.toISOString().replace(/[-:]/g, "").split(".")[0]}Z
+        END:VEVENT
+        END:VCALENDAR
+      `.trim();
+
+      const blob = new Blob([event], { type: 'text/calendar' });
+      const url = URL.createObjectURL(blob);
+      return url;
+    };
 
     const link = document.createElement('a');
-    link.href = url;
+    link.href = createICSFile();
     link.setAttribute('download', `${name}.ics`);
     document.body.appendChild(link);
     link.click();
