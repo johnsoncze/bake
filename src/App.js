@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import receipts from "./receipts";
 import SelectInput from "./SelectInput";
 import CollapsibleSection from "./CollapsibleSection";
+import ReceiptForm from "./ReceiptForm";
+import ReceiptPreview from "./ReceiptPreview";
 
 const formatTime = (dateString) => {
   const date = new Date(dateString);
@@ -49,6 +51,7 @@ function App() {
   const [isStart, setIsStart] = useState(true); // Initialize isStart state
   const [schedule, setSchedule] = useState([]);
   const [selectedReceipt, setSelectedReceipt] = useState(1);
+  const [newReceipt, setNewReceipt] = useState({ name: '', steps: [] });
 
   useEffect(() => {
     const savedDateTime = localStorage.getItem("selectedDateTime");
@@ -167,6 +170,10 @@ END:VCALENDAR
     document.body.removeChild(link);
   };
 
+  const handleReceiptFormSubmit = (receipt) => {
+    setNewReceipt(receipt);
+  };
+
   return (
     <div className="container mx-auto p-4">
       <CollapsibleSection title="Plánování přípravy chleba">
@@ -252,6 +259,10 @@ END:VCALENDAR
         </button>
       </CollapsibleSection>
       {receipts.find((receipt) => receipt.id === selectedReceipt).description()}
+      <CollapsibleSection title="Vytvořit nový recept">
+        <ReceiptForm onSubmit={handleReceiptFormSubmit} />
+        {newReceipt.name && <ReceiptPreview receipt={newReceipt} />}
+      </CollapsibleSection>
     </div>
   );
 }
