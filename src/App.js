@@ -91,44 +91,67 @@ function App() {
     setSchedule(calculateSchedule(dateTime, isStart, newReceipt));
   };
 
+  const downloadIcsFileAllSteps = () => {
+    // You need to convert all steps' dates and other details into the .ics format
+    const steps = Object.values(schedule).flat();
+
+    // Convert all steps' dates to an appropriate format, add more details as needed
+    const createICSFile = () => {
+      const events = steps.map((step) => {
+        const { date, name } = step;
+        const start = new Date(date); // Convert or format this date as needed
+        const end = new Date(start.getTime() + 5 * 60 * 1000); // example end time, 5 minutes after start time
+        return `
+BEGIN:VEVENT
+SUMMARY:${name}
+DTSTART:${start.toISOString().replace(/[-:]/g, "").split(".")[0]}Z
+DTEND:${end.toISOString().replace(/[-:]/g, "").split(".")[0]}Z
+BEGIN:VALARM
+TRIGGER:PT0M
+ACTION:DISPLAY
+DESCRIPTION:Reminder - ${name}
+END:VALARM
+END:VEVENT
+        `.trim();
+      });
+      return `
+BEGIN:VCALENDAR
+VERSION:2.0
+${events.join("\n")}
+END:VCALENDAR
+      `.trim();
+    }
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(new Blob([createICSFile()], { type: 'text/calendar' }));
+    link.setAttribute('download', 'all_steps.ics');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const downloadIcsFile = (step) => {
     // You need to convert step's date and other details into the .ics format
     const { date, name } = step;
-    console.log(typeof date);
 
     // Convert dates to an appropriate format, add more details as needed
     const start = new Date(date); // Convert or format this date as needed
-    const end = new Date(start.getTime() + 60 * 60 * 1000); // example end time, 1 hour after start
-
-    // const createICSFile = () => {
-    //   const event = `
-    // BEGIN:VCALENDAR
-    // VERSION:2.0
-    // BEGIN:VEVENT
-    // SUMMARY:Můj event
-    // DESCRIPTION:Podrobnosti o události.
-    // LOCATION:Praha, Česká republika
-    // DTSTART:20250102T120000Z
-    // DTEND:20250102T130000Z
-    // END:VEVENT
-    // END:VCALENDAR
-    //   `.trim();
-    
-    //   const blob = new Blob([event], { type: 'text/calendar' });
-    //   const url = URL.createObjectURL(blob);
-    //   return url;
-    // };
-
+    const end = new Date(start.getTime() + 5 * 60 * 1000); // example end time, 5 minutes after start time
     const createICSFile = () => {
       const event = `
-        BEGIN:VCALENDAR
-        VERSION:2.0
-        BEGIN:VEVENT
-        SUMMARY:${name}
-        DTSTART:${start.toISOString().replace(/[-:]/g, "").split(".")[0]}Z
-        DTEND:${end.toISOString().replace(/[-:]/g, "").split(".")[0]}Z
-        END:VEVENT
-        END:VCALENDAR
+BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+SUMMARY:${name}
+DTSTART:${start.toISOString().replace(/[-:]/g, "").split(".")[0]}Z
+DTEND:${end.toISOString().replace(/[-:]/g, "").split(".")[0]}Z
+BEGIN:VALARM
+TRIGGER:PT0M
+ACTION:DISPLAY
+DESCRIPTION:Reminder - ${name}
+END:VALARM
+END:VEVENT
+END:VCALENDAR
       `.trim();
 
       const blob = new Blob([event], { type: 'text/calendar' });
@@ -221,6 +244,12 @@ function App() {
             </div>
           ))}
         </div>
+        <button
+          onClick={downloadIcsFileAllSteps}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+        >
+          Všechny kroky do kalendáře
+        </button>
       </CollapsibleSection>
       {receipts.find((receipt) => receipt.id === selectedReceipt).description()}
     </div>
